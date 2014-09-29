@@ -16,6 +16,7 @@ import openblocks.common.tileentity.TileEntityAutoAnvil;
 import openmods.utils.BitSet;
 import sun.net.NetworkClient;
 import net.minecraft.block.BlockFurnace;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiFurnace;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,6 +27,8 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.world.WorldManager;
+import net.minecraftforge.common.DimensionManager;
 
 
 public class CartographerBlockTileEntity extends TileEntity implements IInventory {
@@ -74,19 +77,25 @@ public class CartographerBlockTileEntity extends TileEntity implements IInventor
 		if (stack.getItem() instanceof ItemEmptyMap) {
 			if (stack.stackSize >= 9) {
 				System.out.println( "STACK SIZE: " + stack.stackSize );
+				
+				for (int i = 0; i < 9; i++)
+				{
+					if (getStackInSlot(i) != null) return;
+				}
+				
 				stack = stack.splitStack( stack.stackSize - 9 );
 				if (stack != null && stack.stackSize == 0) stack = null;
 				setInventorySlotContents(9, stack);
-				
-												
+											
 				// create the maps!
 				EntityCartographer carto = new EntityCartographer(worldObj);
 				carto.setPosition(xCoord,  yCoord,  zCoord);
 				
-				int offsetX[] = {0, 0, 4 * 16, 4 * 16};
-				int offsetZ[] = {0, 4 * 16, 0, 4 * 16};
+				int offsetX[] = {-64, 0, 64, -64, 0, 64, -64, 0, 64};
+				int offsetZ[] = {-64, -64, -64, 0, 0, 0, 64, 64, 64};
+				String names[] = {"nw", "n", "ne", "w", "c", "e", "sw", "s", "se"};
 				
-				for (int i = 0; i < 4; i++)
+				for (int i = 0; i < 9; i++)
 				{
 					int ox = offsetX[i];
 					int oz = offsetZ[i];
@@ -113,10 +122,13 @@ public class CartographerBlockTileEntity extends TileEntity implements IInventor
 						chunkJobs.remove(job);
 						bits.setBit(job.bitNum);
 					}
-				
 					ItemStack hmap = new ItemStack(Items.heightMap, 1, newMapId);
-					EntityItem hmapItem = new EntityItemProjectile(worldObj, xCoord, yCoord+1, zCoord, hmap);
-					worldObj.spawnEntityInWorld(hmapItem);
+					hmap.setItemName("Dim_" + "_" + names[i]);
+					
+					setInventorySlotContents(i, hmap);
+					
+					//EntityItem hmapItem = new EntityItemProjectile(worldObj, xCoord, yCoord+1, zCoord, hmap);
+					//worldObj.spawnEntityInWorld(hmapItem);
 				}
 				
 			}

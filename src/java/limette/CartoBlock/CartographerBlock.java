@@ -29,16 +29,14 @@ import openblocks.common.MapDataBuilder;
 import openblocks.common.MapDataManager;
 import openmods.utils.BitSet;
 
-public class CartographerBlock extends BlockContainer {
+public class CartographerBlock extends BlockContainer {	
 	public CartographerBlock( int id, Material mat ){
 		super( id, mat );
 		
 		this.setCreativeTab(CreativeTabs.tabBlock);
 		this.setHardness(5.6f);
 		this.setResistance(56.34f);
-		
 	}
-	
 	
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, 
