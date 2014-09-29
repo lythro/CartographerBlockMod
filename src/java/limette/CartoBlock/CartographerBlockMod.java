@@ -1,17 +1,17 @@
 package limette.CartoBlock;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.*;
-import net.minecraft.client.Minecraft;
+import net.minecraft.block.material.Material;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 @Mod(modid = CartographerBlockMod.MODID, name=CartographerBlockMod.NAME, version = CartographerBlockMod.VERSION)
 @NetworkMod(clientSideRequired = true, serverSideRequired = true)
@@ -26,6 +26,8 @@ public class CartographerBlockMod
     
     public static Block cartoBlock;
     
+    @SidedProxy(clientSide="limette.CartoBlock.CartographerBlockClientProxy", serverSide="limette.CartoBlock.CartographerBlockServerProxy")
+    public static CommonProxy proxy;
     
     @EventHandler
     public void init(FMLInitializationEvent event)
@@ -38,6 +40,8 @@ public class CartographerBlockMod
     	GameRegistry.registerTileEntity(CartographerBlockTileEntity.class, "CartographerBlockContainer");
     	
     	NetworkRegistry.instance().registerGuiHandler(this, new CartographerGUIHandler());
+    	
+    	proxy.registerRenderers();
     }
 
     
