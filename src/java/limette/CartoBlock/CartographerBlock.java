@@ -6,6 +6,7 @@ import java.util.Set;
 import cpw.mods.fml.common.network.FMLNetworkHandler;
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -145,6 +146,25 @@ public class CartographerBlock extends BlockContainer {
 	public TileEntity createNewTileEntity(World world) {
 		return new CartographerBlockTileEntity();
 	}
+	
+	@Override
+	public int getRenderType() {
+		return -1;
+	}
+	
+	@Override
+	public boolean isOpaqueCube() {
+		return false;
+	}
+	
+	public boolean renderAsNormalBlock() {
+		return false;
+	}
+	
+	public void registerIcons(IconRegister icon){
+		this.blockIcon = icon.registerIcon("cartoblock:textures/items/CartographerBlockIcon.png");
+
+}
 	
 	
 }

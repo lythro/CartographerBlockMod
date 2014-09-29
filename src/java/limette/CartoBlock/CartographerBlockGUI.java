@@ -35,7 +35,7 @@ public class CartographerBlockGUI extends GuiContainer {
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2,
 			int par3) {
 		//draw your Gui here, only thing you need to change is the path
-		ResourceLocation textureResourceLoc = new ResourceLocation("cartoblock:textures/crafting_table.png");
+		ResourceLocation textureResourceLoc = new ResourceLocation("cartoblock:textures/gui/crafting_table.png");
 		//ResourceLocation textureResourceLoc = new ResourceLocation("textures/gui/container/crafting_table.png");
 		this.mc.renderEngine.bindTexture(textureResourceLoc);
 		
