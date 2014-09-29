@@ -1,6 +1,23 @@
 package limette.CartoBlock;
 
+import java.util.Set;
+
+import cpw.mods.fml.common.network.NetworkModHandler;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
+import openblocks.OpenBlocks.Items;
+import openblocks.common.MapDataBuilder;
+import openblocks.common.MapDataBuilder.ChunkJob;
+import openblocks.common.MapDataManager;
+import openblocks.common.entity.EntityCartographer;
+import openblocks.common.entity.EntityItemProjectile;
+import openblocks.common.item.ItemEmptyMap;
 import openblocks.common.tileentity.TileEntityAutoAnvil;
+import openmods.utils.BitSet;
+import sun.net.NetworkClient;
+import net.minecraft.block.BlockFurnace;
+import net.minecraft.client.gui.inventory.GuiFurnace;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -39,6 +56,74 @@ public class CartographerBlockTileEntity extends TileEntity implements IInventor
 		}               
 	}
 
+	@Override
+	public void onInventoryChanged() {
+		super.onInventoryChanged();
+		
+		if (!worldObj.isRemote)
+			checkForEmptyMaps();
+	}
+	
+	/// check if 9 empty maps are in the slot no.9
+	public void checkForEmptyMaps() {
+		ItemStack stack = getStackInSlot(9);
+		
+		System.out.println("CHECK");
+
+		if (stack == null) return;
+		if (stack.getItem() instanceof ItemEmptyMap) {
+			if (stack.stackSize >= 9) {
+				System.out.println( "STACK SIZE: " + stack.stackSize );
+				stack = stack.splitStack( stack.stackSize - 9 );
+				if (stack != null && stack.stackSize == 0) stack = null;
+				setInventorySlotContents(9, stack);
+				
+												
+				// create the maps!
+				EntityCartographer carto = new EntityCartographer(worldObj);
+				carto.setPosition(xCoord,  yCoord,  zCoord);
+				
+				int offsetX[] = {0, 0, 4 * 16, 4 * 16};
+				int offsetZ[] = {0, 4 * 16, 0, 4 * 16};
+				
+				for (int i = 0; i < 4; i++)
+				{
+					int ox = offsetX[i];
+					int oz = offsetZ[i];
+					
+					int useX = xCoord + ox;
+					int useZ = zCoord + oz;
+					
+					int newMapId = MapDataManager.createNewMap(worldObj, (byte) 0);
+					carto.jobs.startMapping(worldObj, newMapId, useX, useZ);
+				
+					MapDataBuilder builder = new MapDataBuilder(newMapId);
+					builder.resetMap(worldObj, useX, useZ);
+				
+					BitSet bits = new BitSet();
+					builder.resizeIfNeeded(bits);
+				
+					Set<MapDataBuilder.ChunkJob> chunkJobs = builder.createJobs(bits);
+				
+					while (true){
+						ChunkJob job = builder.doNextChunk(worldObj, useX, useZ, chunkJobs);
+						if (job == null) break;
+					
+						System.out.println("Chunk.");
+						chunkJobs.remove(job);
+						bits.setBit(job.bitNum);
+					}
+				
+					ItemStack hmap = new ItemStack(Items.heightMap, 1, newMapId);
+					EntityItem hmapItem = new EntityItemProjectile(worldObj, xCoord, yCoord+1, zCoord, hmap);
+					worldObj.spawnEntityInWorld(hmapItem);
+				}
+				
+			}
+			
+		}
+	}
+	
 	@Override
 	public ItemStack decrStackSize(int slot, int amt) {
 		ItemStack stack = getStackInSlot(slot);
@@ -124,14 +209,14 @@ public class CartographerBlockTileEntity extends TileEntity implements IInventor
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
-		System.out.println( "test" );
-		return i < 10;
-	}
-	
-	@Override
 	public void updateEntity()
 	{
 		//System.out.println( counter++ );
+	}
+
+	@Override
+	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

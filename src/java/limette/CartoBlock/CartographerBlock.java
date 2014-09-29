@@ -44,56 +44,13 @@ public class CartographerBlock extends BlockContainer {
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, 
 									int par6, float par7, float par8, float par9)
 									{
-		
-		
-		
-		
+
 		if (!world.isRemote)
 		{
 			FMLNetworkHandler.openGui(player, CartographerBlockMod.instance,
 										0, world, x, y, z);
 			
 			player.openGui(CartographerBlockMod.instance, 0, world, x, y, z);
-			/*
-			EntityCartographer carto = new EntityCartographer(world);
-			carto.setPosition(x,  y,  z);
-			
-			int offsetX[] = {0, 0, 4 * 16, 4 * 16};
-			int offsetZ[] = {0, 4 * 16, 0, 4 * 16};
-			
-			for (int i = 0; i < 4; i++)
-			{
-				int ox = offsetX[i];
-				int oz = offsetZ[i];
-				
-				int useX = x + ox;
-				int useZ = z + oz;
-				
-				int newMapId = MapDataManager.createNewMap(world, (byte) 0);
-				carto.jobs.startMapping(world, newMapId, useX, useZ);
-			
-				MapDataBuilder builder = new MapDataBuilder(newMapId);
-				builder.resetMap(world, useX, useZ);
-			
-				BitSet bits = new BitSet();
-				builder.resizeIfNeeded(bits);
-			
-				Set<MapDataBuilder.ChunkJob> chunkJobs = builder.createJobs(bits);
-			
-				while (true){
-					ChunkJob job = builder.doNextChunk(world, useX, useZ, chunkJobs);
-					if (job == null) break;
-				
-					System.out.println("Chunk.");
-					chunkJobs.remove(job);
-					bits.setBit(job.bitNum);
-				}
-			
-				ItemStack hmap = new ItemStack(Items.heightMap, 1, newMapId);
-				EntityItem hmapItem = new EntityItemProjectile(world, x, y+1, z, hmap);
-				//world.spawnEntityInWorld(hmapItem);
-			}
-			*/
 		}
 		
 		return true;
