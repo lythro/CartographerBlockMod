@@ -1,4 +1,5 @@
 package limette.CartoBlock;
+
 import openblocks.common.tileentity.TileEntityAutoAnvil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -124,6 +125,7 @@ public class CartographerBlockTileEntity extends TileEntity implements IInventor
 
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
+		System.out.println( "test" );
 		return i < 10;
 	}
 	

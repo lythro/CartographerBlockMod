@@ -27,7 +27,7 @@ public class CartographerBlockContainer extends Container {
             }
         }
         
-        //this.addSlotToContainer(new Slot(tileEntity, 9, 124, 35));
+        this.addSlotToContainer(new Slot(tileEntity, 9, 124, 35));
         
 		//commonly used vanilla code that adds the player's inventory
 		bindPlayerInventory(inventoryPlayer);
@@ -51,42 +51,32 @@ public class CartographerBlockContainer extends Container {
 			addSlotToContainer(new Slot(inventoryPlayer, i, 8 + i * 18, 142));
 		}
 	}
-
+	
+	
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer player, int slot) {
-		System.out.println( "slot: " + slot );
-		ItemStack stack = null;
-		Slot slotObject = (Slot) inventorySlots.get(slot);
+	public ItemStack transferStackInSlot(EntityPlayer player, int i) {
+		Slot slot = getSlot(i);
 
-		//null checks and checks if the item can be stacked (maxStackSize > 1)
-		if (slotObject != null && slotObject.getHasStack()) {
-			ItemStack stackInSlot = slotObject.getStack();
-			stack = stackInSlot.copy();
+		if(slot != null && slot.getHasStack()) {
+			ItemStack itemstack = slot.getStack();
+			ItemStack result = itemstack.copy();
 
-			//merges the item into player inventory since its in the tileEntity
-			if (slot < 9) {
-				System.out.println("slot " + slot + "< 9");
-				if (!this.mergeItemStack(stackInSlot, 0+10, 35+10, true)) {
+			if(i >= 36) {
+				if(!mergeItemStack(itemstack, 0, 36, false)) {
 					return null;
 				}
-			}
-			//places it into the tileEntity is possible since its in the player inventory
-			else if (!this.mergeItemStack(stackInSlot, 0, 9, false)) {
+			} else if(!mergeItemStack(itemstack, 36, 36 + tileEntity.getSizeInventory(), false)) {
 				return null;
 			}
 
-			if (stackInSlot.stackSize == 0) {
-				slotObject.putStack(null);
+			if(itemstack.stackSize == 0) {
+				slot.putStack(null);
 			} else {
-				slotObject.onSlotChanged();
+				slot.onSlotChanged();
 			}
-
-			if (stackInSlot.stackSize == stack.stackSize) {
-				return null;
-			}
-			slotObject.onPickupFromSlot(player, stackInSlot);
+			slot.onPickupFromSlot(player, itemstack); 
+			return result;
 		}
-		
-		return stack;
+		return null;
 	}
 }

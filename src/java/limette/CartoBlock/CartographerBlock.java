@@ -3,6 +3,7 @@ package limette.CartoBlock;
 import java.util.Random;
 import java.util.Set;
 
+import cpw.mods.fml.common.network.FMLNetworkHandler;
 import net.minecraft.block.*;
 import net.minecraft.block.material.*;
 import net.minecraft.creativetab.CreativeTabs;
@@ -43,11 +44,15 @@ public class CartographerBlock extends BlockContainer {
 									int par6, float par7, float par8, float par9)
 									{
 		
-		player.openGui(CartographerBlockMod.instance, 0, world, x, y, z);
+		
 		
 		
 		if (!world.isRemote)
-		{	
+		{
+			FMLNetworkHandler.openGui(player, CartographerBlockMod.instance,
+										0, world, x, y, z);
+			
+			player.openGui(CartographerBlockMod.instance, 0, world, x, y, z);
 			/*
 			EntityCartographer carto = new EntityCartographer(world);
 			carto.setPosition(x,  y,  z);
@@ -90,7 +95,7 @@ public class CartographerBlock extends BlockContainer {
 			*/
 		}
 		
-		return false;
+		return true;
 	}
 
 	
