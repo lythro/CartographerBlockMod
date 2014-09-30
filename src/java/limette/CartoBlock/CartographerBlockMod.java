@@ -2,7 +2,9 @@ package limette.CartoBlock;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
+import openblocks.OpenBlocks.Items;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -43,6 +45,15 @@ public class CartographerBlockMod
     	NetworkRegistry.instance().registerGuiHandler(this, new CartographerGUIHandler());
     	
     	proxy.registerRenderers();
+    
+    	// 'R', BlockReferences.EnumBlocks.rubyBlock
+    	// 'P', ComputerCraft.Blocks.computer
+    	
+    	GameRegistry.addRecipe(new ItemStack(cartoBlock, 1), "C C", "E E", "I I",
+    			'I', Block.blockIron, 'C', Items.cartographer, 'E', Block.blockEmerald);
+    	
+//    	GameRegistry.addRecipe(new ItemStack(cartoBlock), "E E", "   ", "I I", "E", 
+//    			enderEyeStack, "I", ironBlockStack);
     }
 
     

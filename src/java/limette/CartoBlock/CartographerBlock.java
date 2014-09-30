@@ -12,6 +12,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.network.FMLNetworkHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -24,6 +25,7 @@ public class CartographerBlock extends BlockContainer {
 		this.setCreativeTab(CreativeTabs.tabBlock);
 		this.setHardness(5.6f);
 		this.setResistance(56.34f);
+		this.setTextureName("CartographerBlock");
 	}
 	
 	@Override
@@ -104,10 +106,16 @@ public class CartographerBlock extends BlockContainer {
 		return false;
 	}
 	
-//	@SideOnly(Side.CLIENT)
-//	public void registerIcons(IconRegister icon){
-//		this.blockIcon = icon.registerIcon("cartoblock:textures/items/CartographerBlockIcon.png");
-//	}
+	@SideOnly(Side.CLIENT)
+	public Icon getIcon(){
+		return this.blockIcon;
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister register){
+		this.blockIcon = register.registerIcon("cartoblock:textures/items/CartographerBlockIcon.png");
+	}
 	
 	
 }

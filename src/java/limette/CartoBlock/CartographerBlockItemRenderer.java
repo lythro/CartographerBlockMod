@@ -32,8 +32,29 @@ public class CartographerBlockItemRenderer implements IItemRenderer {
 	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
 		// TODO Auto-generated method stub
 		GL11.glPushMatrix();
-		GL11.glTranslatef((float)0, (float) 1F, (float) 0);
 		GL11.glScalef(-1F,  -1F,  1F);
+		
+		//correct position of the item according to where it should be rendered
+		//(only minor adjustments)
+		switch (type) {
+		case INVENTORY:
+			GL11.glTranslatef(0, -1F, 0);
+			break;
+		case EQUIPPED:
+			GL11.glTranslatef(-0.6F, -1.4F, 0.5F);
+			break;
+		case ENTITY:
+			GL11.glTranslatef(0, -1F, 0);
+			break;
+		case EQUIPPED_FIRST_PERSON:
+			GL11.glTranslatef(-0.3F, -1.7F, 0.5F);
+			break;
+		case FIRST_PERSON_MAP:
+			break;
+		default:
+			break;
+		}
+		
 		Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("cartoblock:textures/blocks/CartographerBlock.png"));
 		
 		model.render(null, 0, 0, 0, 0, 0, 0.0625F);
