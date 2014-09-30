@@ -16,8 +16,8 @@ public class CartographerBlockRenderer extends TileEntitySpecialRenderer {
 
 	private final CartographerBlockModel model;
 
-	public CartographerBlockRenderer() {
-		this.model = new CartographerBlockModel();
+	public CartographerBlockRenderer(CartographerBlockModel model) {
+		this.model = model;
 	}
 
 	private void adjustRotatePivotViaMeta(World world, int x, int y, int z) {

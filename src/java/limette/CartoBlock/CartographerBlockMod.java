@@ -20,6 +20,7 @@ public class CartographerBlockMod
     public static final String MODID = "lim_carto_block";
     public static final String VERSION = "1.0";
     public static final String NAME = "CartographerBlockMod";
+    public static final int CARTOBLOCK_ID = 500;
     
     @Instance( MODID )
     public static CartographerBlockMod instance; 
@@ -32,7 +33,7 @@ public class CartographerBlockMod
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
-    	cartoBlock = (new CartographerBlock( 500, Material.rock ));
+    	cartoBlock = (new CartographerBlock( CARTOBLOCK_ID, Material.rock ));
     	LanguageRegistry.addName(cartoBlock, "Cartographer Block");
     	MinecraftForge.setBlockHarvestLevel(cartoBlock, "pickaxe", 1);
     	
