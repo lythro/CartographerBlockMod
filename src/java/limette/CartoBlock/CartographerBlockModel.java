@@ -28,8 +28,8 @@ public class CartographerBlockModel extends ModelBase
   
   public CartographerBlockModel()
   {
-    textureWidth = 128;
-    textureHeight = 128;
+    textureWidth = 64;
+    textureHeight = 64;
     
       tablebase = new ModelRenderer(this, 0, 0);
       tablebase.addBox(0F, 0F, 0F, 15, 11, 15);
