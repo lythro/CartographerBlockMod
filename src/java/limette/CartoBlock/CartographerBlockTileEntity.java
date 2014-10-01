@@ -144,6 +144,12 @@ public class CartographerBlockTileEntity extends TileEntity implements IInventor
 	}
 	
 	@Override
+	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt) {
+		System.out.println( "ONDATAPACKET" );
+		readFromNBT(pkt.data);
+	}
+	
+	@Override
 	public void readFromNBT(NBTTagCompound tagCompound) {
 		super.readFromNBT(tagCompound);
 
