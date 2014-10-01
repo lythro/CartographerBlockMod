@@ -3,6 +3,7 @@ package limette.CartoBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
@@ -51,12 +52,11 @@ public class CartographerBlockMod
     
     	// 'R', BlockReferences.EnumBlocks.rubyBlock
     	// 'P', ComputerCraft.Blocks.computer
+    	// 'R', Block.blockRedstone
     	
-    	GameRegistry.addRecipe(new ItemStack(cartoBlock, 1), "C C", "R R", "I I",
-    			'I', Block.blockIron, 'C', Items.cartographer, 'R', Block.blockRedstone);
+    	GameRegistry.addRecipe(new ItemStack(cartoBlock, 1), "CIC", "IMI", "CIC",
+    			'I', Block.blockIron, 'C', Items.cartographer, 'M', Item.emptyMap);
     	
-//    	GameRegistry.addRecipe(new ItemStack(cartoBlock), "E E", "   ", "I I", "E", 
-//    			enderEyeStack, "I", ironBlockStack);
     }
 
     
