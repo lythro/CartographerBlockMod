@@ -15,7 +15,7 @@ import org.lwjgl.opengl.GL11;
 
 public class CartographerBlockGUI extends GuiContainer {
 
-	public static final ResourceLocation textureResourceLoc = new ResourceLocation("cartoblock:textures/gui/crafting_table.png"); 
+	public static final ResourceLocation textureResourceLoc = new ResourceLocation("cartoblock:textures/gui/crafting_table_map_progress.png"); 
 	private CartographerBlockTileEntity cartoBlock;
 
 	public CartographerBlockGUI (InventoryPlayer inventoryPlayer,
@@ -48,11 +48,11 @@ public class CartographerBlockGUI extends GuiContainer {
 
 		this.drawTexturedModalRect(x,  y,  0, 0, xSize, ySize);
 		
-		System.out.println(xSize + ", " + ySize);
-		
-		int pX = 63 - cartoBlock.getCookProgressScaled(63);
-		System.out.println(pX);
-		drawTexturedModalRect(x, y, xSize+1, 0, pX, ySize + 60);
+		if (this.cartoBlock.countdown < CartographerBlockTileEntity.runTime) {
+			int pX = cartoBlock.getCookProgressScaled(15);
+			System.out.println(pX);
+			drawTexturedModalRect(x + 86 + 7 - pX/2, y + 35, xSize + 7 - pX/2, 0, pX, 60);
+		}
 
 	}
 
