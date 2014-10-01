@@ -1,11 +1,14 @@
 package limette.CartoBlock;
 
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import openblocks.common.item.ItemEmptyMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerFurnace;
+import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.Item;
@@ -14,6 +17,7 @@ import net.minecraft.item.crafting.CraftingManager;
 
 public class CartographerBlockContainer extends Container {
 
+	private int lastCountdown = 0;
 	protected CartographerBlockTileEntity tileEntity;
 
 	public CartographerBlockContainer (InventoryPlayer inventoryPlayer, CartographerBlockTileEntity te){
@@ -34,8 +38,6 @@ public class CartographerBlockContainer extends Container {
         }
         
         this.addSlotToContainer(new Slot(tileEntity, 9, 124, 35));
-        
-		
 	}
 
 	@Override
@@ -95,4 +97,47 @@ public class CartographerBlockContainer extends Container {
 		}
 		return null;
 	}
+	
+	
+	@Override
+	public void addCraftingToCrafters(ICrafting par1ICrafting)
+    {
+        super.addCraftingToCrafters(par1ICrafting);
+        par1ICrafting.sendProgressBarUpdate(this, 0, this.tileEntity.countdown);
+        
+        System.out.println( "ADD CRAFTING TO CRAFTERS" );
+    }
+
+	
+    /**
+     * Looks for changes made in the container, sends them to every listener.
+     */
+	@Override
+    public void detectAndSendChanges()
+    {
+        super.detectAndSendChanges();
+
+        for (int i = 0; i < this.crafters.size(); ++i)
+        {
+            ICrafting icrafting = (ICrafting)this.crafters.get(i);
+
+            if (this.lastCountdown != this.tileEntity.countdown)
+            {
+                icrafting.sendProgressBarUpdate(this, 0, this.tileEntity.countdown);
+                System.out.println( "DETECT AND SEND CHANGES " );
+            }
+        }
+
+        this.lastCountdown = this.tileEntity.countdown;
+    }
+
+	@Override
+    @SideOnly(Side.CLIENT)
+    public void updateProgressBar(int par1, int par2)
+    {
+        if (par1 == 0)
+        {
+            this.tileEntity.countdown = par2;
+        }
+    }
 }
