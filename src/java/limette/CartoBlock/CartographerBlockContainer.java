@@ -3,7 +3,10 @@ package limette.CartoBlock;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import openblocks.client.gui.GuiAutoAnvil;
 import openblocks.common.item.ItemEmptyMap;
+import net.minecraft.block.BlockAnvil;
+import net.minecraft.client.gui.GuiChat;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -104,8 +107,6 @@ public class CartographerBlockContainer extends Container {
     {
         super.addCraftingToCrafters(par1ICrafting);
         par1ICrafting.sendProgressBarUpdate(this, 0, this.tileEntity.countdown);
-        
-        System.out.println( "ADD CRAFTING TO CRAFTERS" );
     }
 
 	
@@ -124,7 +125,6 @@ public class CartographerBlockContainer extends Container {
             if (this.lastCountdown != this.tileEntity.countdown)
             {
                 icrafting.sendProgressBarUpdate(this, 0, this.tileEntity.countdown);
-                System.out.println( "DETECT AND SEND CHANGES " );
             }
         }
 

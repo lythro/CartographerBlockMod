@@ -1,11 +1,16 @@
 package limette.CartoBlock;
 
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.IOException;
 import java.util.Set;
 
 import org.apache.commons.io.output.NullWriter;
 
+import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.NetworkModHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -17,6 +22,7 @@ import openblocks.common.entity.EntityCartographer;
 import openblocks.common.entity.EntityItemProjectile;
 import openblocks.common.item.ItemEmptyMap;
 import openblocks.common.tileentity.TileEntityAutoAnvil;
+import openmods.network.PacketHandler;
 import openmods.utils.BitSet;
 import scala.xml.persistent.SetStorage;
 import sun.net.NetworkClient;
@@ -24,6 +30,7 @@ import net.minecraft.block.BlockFurnace;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiFurnace;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -31,6 +38,9 @@ import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.INetworkManager;
+import net.minecraft.network.packet.Packet132TileEntityData;
+import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntityFurnace;
@@ -45,12 +55,17 @@ public class CartographerBlockTileEntity extends TileEntity implements IInventor
 
 	public boolean isRunning = false;
 	public int countdown = runTime;
+	public String dimName = "";
 
 
 	public CartographerBlockTileEntity() {
 		inv = new ItemStack[10];
 	}
 
+	public void setDimName(String name) {
+		dimName = name;
+	}
+	
 	@Override
 	public int getSizeInventory() {
 		return inv.length;
@@ -119,6 +134,16 @@ public class CartographerBlockTileEntity extends TileEntity implements IInventor
 	public void closeChest() {}
 
 	@Override
+	public net.minecraft.network.packet.Packet getDescriptionPacket() {
+		NBTTagCompound tags = new NBTTagCompound();
+		writeToNBT(tags);
+		
+		System.out.println("getDescriptionPacket!");
+		
+		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 1, tags);
+	}
+	
+	@Override
 	public void readFromNBT(NBTTagCompound tagCompound) {
 		super.readFromNBT(tagCompound);
 
@@ -130,9 +155,12 @@ public class CartographerBlockTileEntity extends TileEntity implements IInventor
 				inv[slot] = ItemStack.loadItemStackFromNBT(tag);
 			}
 		}
+		
+		if (worldObj.isRemote) System.out.println("CLIENT READ FROM NBT!");
 
 		isRunning = tagCompound.getBoolean("isRunning");
 		countdown = tagCompound.getInteger("countdown");
+		dimName = tagCompound.getString("dimName");
 	}
 
 	@Override
@@ -153,6 +181,7 @@ public class CartographerBlockTileEntity extends TileEntity implements IInventor
 
 		tagCompound.setBoolean("isRunning", isRunning);
 		tagCompound.setInteger("countdown", countdown);
+		tagCompound.setString("dimName", dimName);
 	}
 
 	@Override
@@ -198,7 +227,7 @@ public class CartographerBlockTileEntity extends TileEntity implements IInventor
 						succ = true;
 						EntityCartographer carto = new EntityCartographer(worldObj);
 						carto.setPosition(xCoord,  yCoord,  zCoord);
-						
+
 						int offsetX[] = {-64, 0, 64, -64, 0, 64, -64, 0, 64};
 						int offsetZ[] = {-64, -64, -64, 0, 0, 0, 64, 64, 64};
 						String names[] = {"nw", "n", "ne", "w", "c", "e", "sw", "s", "se"};
@@ -229,17 +258,17 @@ public class CartographerBlockTileEntity extends TileEntity implements IInventor
 							bits.setBit(job.bitNum);
 						}
 						ItemStack hmap = new ItemStack(Items.heightMap, 1, newMapId);
-						hmap.setItemName("Dim_" + "_" + names[slot]);
+						hmap.setItemName("Dim_" + dimName + "_" + names[slot]);
 
 						setInventorySlotContents(slot, hmap);
 						onInventoryChanged();
-						
+
 						countdown = runTime;
 						isRunning = false;
 						break;
 					}
 				}
-				
+
 				if (!succ) {
 					// --> try to output every tick..
 					isRunning = true;
@@ -279,4 +308,5 @@ public class CartographerBlockTileEntity extends TileEntity implements IInventor
 		// TODO Auto-generated method stub
 		return false;
 	}
+
 }

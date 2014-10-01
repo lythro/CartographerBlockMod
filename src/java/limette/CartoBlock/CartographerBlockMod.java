@@ -18,7 +18,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 @Mod(modid = CartographerBlockMod.MODID, name=CartographerBlockMod.NAME, version = CartographerBlockMod.VERSION)
-@NetworkMod(clientSideRequired = true, serverSideRequired = true)
+@NetworkMod(clientSideRequired = true, serverSideRequired = true, channels={"cartoBlockMod"},  packetHandler=CartographerPacketHandler.class)
 public class CartographerBlockMod
 {
     public static final String MODID = "lim_carto_block";
