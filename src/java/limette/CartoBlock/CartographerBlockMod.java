@@ -25,7 +25,7 @@ public class CartographerBlockMod
     public static final String MODID = "lim_carto_block";
     public static final String VERSION = "1.0";
     public static final String NAME = "CartographerBlockMod";
-    public static final int CARTOBLOCK_ID = 500;
+    public static final int CARTOBLOCK_ID = 2589;
     
     @Instance( MODID )
     public static CartographerBlockMod instance; 

@@ -1,16 +1,16 @@
 [
 {
-  "modid": "examplemod",
-  "name": "Example Mod",
-  "description": "Example placeholder mod.",
-  "version": "${version}",
-  "mcversion": "${mcversion}",
+  "modid": "lim_carto_block",
+  "name": "CartographerBlockMod",
+  "description": "Packs the Functionality of multiple OpenBlocks Cartographers into one block",
+  "version": "1.0",
+  "mcversion": "1.6.4",
   "url": "",
   "updateUrl": "",
-  "authors": ["ExampleDude"],
-  "credits": "The Forge and FML guys, for making this example",
+  "authors": ["limette", "Zalia"],
+  "credits": "Mithion, Vidar Swenning, MrrGingerNinja",
   "logoFile": "",
   "screenshots": [],
-  "dependencies": []
+  "dependencies": [Forge9.11.1.965]
 }
 ]
