@@ -55,7 +55,7 @@ public class CartographerBlockItemRenderer implements IItemRenderer {
 			break;
 		}
 		
-		Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("cartoblock:textures/blocks/CartographerBlockModelTexture.png"));
+		Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("cartographerblockmod:textures/blocks/CartographerBlockModelTexture.png"));
 		
 		model.render(null, 0, 0, 0, 0, 0, 0.0625F);
 		

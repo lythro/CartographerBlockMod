@@ -39,7 +39,7 @@ public class CartographerBlockRenderer extends TileEntitySpecialRenderer {
 		// Outdated
 		// bindTextureByName("/mods/roads/textures/blocks/TrafficLightPoleRed.png");
 		// Use in 1.6.2 this
-		ResourceLocation textures = (new ResourceLocation("cartoblock:textures/blocks/CartographerBlockModelTexture.png"));
+		ResourceLocation textures = (new ResourceLocation("cartographerblockmod:textures/blocks/CartographerBlockModelTexture.png"));
 		// the ':' is very important
 		// binding the textures
 		Minecraft.getMinecraft().renderEngine.bindTexture(textures);

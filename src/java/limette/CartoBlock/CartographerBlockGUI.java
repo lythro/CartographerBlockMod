@@ -25,7 +25,7 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 
 public class CartographerBlockGUI extends GuiContainer {
 
-	public static final ResourceLocation textureResourceLoc = new ResourceLocation("cartoblock:textures/gui/crafting_table_map_progress.png"); 
+	public static final ResourceLocation textureResourceLoc = new ResourceLocation("cartographerblockmod:textures/gui/crafting_table_map_progress.png"); 
 	private CartographerBlockTileEntity cartoBlock;
 	
 	private GuiTextField textfield;

@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import openblocks.OpenBlocks.Items;
+import openmods.config.RegisterBlock;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -35,15 +36,21 @@ public class CartographerBlockMod
     @SidedProxy(clientSide="limette.CartoBlock.CartographerBlockClientProxy", serverSide="limette.CartoBlock.CartographerBlockServerProxy")
     public static CommonProxy proxy;
     
+    
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
+    	
+    	System.out.println("PATH: " +  CartographerBlockGUI.textureResourceLoc.getResourcePath());
+    	
     	cartoBlock = (new CartographerBlock( CARTOBLOCK_ID, Material.rock ));
+    	
+    	GameRegistry.registerBlock(cartoBlock, "cartoBlock");
     	LanguageRegistry.addName(cartoBlock, "Cartographer Block");
     	MinecraftForge.setBlockHarvestLevel(cartoBlock, "pickaxe", 1);
     	
-    	GameRegistry.registerBlock(cartoBlock, "cartoBlock");
-    	GameRegistry.registerTileEntity(CartographerBlockTileEntity.class, "CartographerBlockContainer");
+    	
+    	GameRegistry.registerTileEntity(CartographerBlockTileEntity.class, "CartographerBlockTE");//Container");
     	
     	NetworkRegistry.instance().registerGuiHandler(this, new CartographerGUIHandler());
     	

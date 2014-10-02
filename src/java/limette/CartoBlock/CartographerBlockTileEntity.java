@@ -61,9 +61,13 @@ public class CartographerBlockTileEntity extends TileEntity implements IInventor
 	public CartographerBlockTileEntity() {
 		inv = new ItemStack[10];
 	}
-
+	
 	public void setDimName(String name) {
 		dimName = name;
+		if (name.equals("")) {
+			if (worldObj != null)
+				dimName = worldObj.getBiomeGenForCoords(xCoord, zCoord).biomeName;
+		}
 	}
 	
 	@Override
@@ -145,7 +149,6 @@ public class CartographerBlockTileEntity extends TileEntity implements IInventor
 	
 	@Override
 	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt) {
-		System.out.println( "ONDATAPACKET" );
 		readFromNBT(pkt.data);
 	}
 	
@@ -161,8 +164,6 @@ public class CartographerBlockTileEntity extends TileEntity implements IInventor
 				inv[slot] = ItemStack.loadItemStackFromNBT(tag);
 			}
 		}
-		
-		if (worldObj.isRemote) System.out.println("CLIENT READ FROM NBT!");
 
 		isRunning = tagCompound.getBoolean("isRunning");
 		countdown = tagCompound.getInteger("countdown");
@@ -204,39 +205,78 @@ public class CartographerBlockTileEntity extends TileEntity implements IInventor
 	@Override
 	public void updateEntity()
 	{
+		if (dimName.equals("") && worldObj != null) {
+			dimName = worldObj.getBiomeGenForCoords(xCoord, zCoord).biomeName;
+		}
+		
 		if (!worldObj.isRemote)
 		{
-			if (!isRunning)
-			{
-				// check, if there are maps to consume!
-				ItemStack stack = getStackInSlot(9);
-				if (stack != null) {
-					if (stack.getItem() instanceof ItemEmptyMap && stack.stackSize >= 1) {
-						stack.stackSize = stack.stackSize - 1;
-						if (stack.stackSize == 0) this.setInventorySlotContents(9, null);
+			// check if there are maps to consume.
+			// - no maps, but active? User took 'em out, abort!
+			// - maps, but inactive? Start mapping!
+			ItemStack stack = getStackInSlot(9);
+			if (stack != null) {
+				if (stack.getItem() instanceof ItemEmptyMap && stack.stackSize >= 1) {
+					if (!isRunning) {
+						// start mapping
 						isRunning = true;
-
-						onInventoryChanged();
+					}
+				} else {
+					if (isRunning) {
+						// abort mapping
+						isRunning = false;
+						countdown = runTime;
 					}
 				}
+			} else {
+				if (isRunning) {
+					// abort mapping
+					isRunning = false;
+					countdown = runTime;
+				}
 			}
-			else countdown--;
+			
+			if (isRunning) {
+				// check if at least one output slot is free. If not, abort!
+				boolean free = false; 
+				for (int i = 0; i < 9; i++) {
+					ItemStack tmp = getStackInSlot(i);
+					if (tmp == null) {
+						free = true;
+						break;
+					}
+				}
+				
+				if (!free) {
+					isRunning = false;
+					countdown = runTime;
+				}
+			}
+			
+			if (isRunning) countdown--;
 
 			if (countdown <= 0)
 			{
-				System.out.println("countdown reached 0");
-
 				boolean succ = false;
 				for (int slot = 0; slot < 9; slot++) {
 					if (this.getStackInSlot(slot) == null) {
 						// success, found an empty slot to put the map into!
 						succ = true;
+						
+						// but first let's consume a map.
+						// we already have a stack from the checks before, and if they
+						// failed we wouldn't be here. (isRunning = false + coundown reset)
+						// So we can safely assume to have at least one empty map, which is nice.
+						stack.stackSize--;
+						if (stack.stackSize == 0) this.setInventorySlotContents(9, null);
+						
+						// now, let's get a map.
 						EntityCartographer carto = new EntityCartographer(worldObj);
 						carto.setPosition(xCoord,  yCoord,  zCoord);
 
 						int offsetX[] = {-64, 0, 64, -64, 0, 64, -64, 0, 64};
 						int offsetZ[] = {-64, -64, -64, 0, 0, 0, 64, 64, 64};
-						String names[] = {"nw", "n", "ne", "w", "c", "e", "sw", "s", "se"};
+						String names[] = {"NW", "N", "NE", "W", "C", "E", "SW", "S", "SE"};
 
 						int ox = offsetX[slot];
 						int oz = offsetZ[slot];
@@ -259,12 +299,11 @@ public class CartographerBlockTileEntity extends TileEntity implements IInventor
 							ChunkJob job = builder.doNextChunk(worldObj, useX, useZ, chunkJobs);
 							if (job == null) break;
 
-							System.out.println("Chunk.");
 							chunkJobs.remove(job);
 							bits.setBit(job.bitNum);
 						}
 						ItemStack hmap = new ItemStack(Items.heightMap, 1, newMapId);
-						hmap.setItemName("Dim_" + dimName + "_" + names[slot]);
+						hmap.setItemName("Map_" + dimName + "_" + names[slot]);
 
 						setInventorySlotContents(slot, hmap);
 						onInventoryChanged();
@@ -276,9 +315,9 @@ public class CartographerBlockTileEntity extends TileEntity implements IInventor
 				}
 
 				if (!succ) {
-					// --> try to output every tick..
+					// --> try to output every other tick..
 					isRunning = true;
-					countdown = 0;
+					countdown = 1;
 				}
 			}
 		}

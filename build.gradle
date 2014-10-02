@@ -23,11 +23,15 @@ sourceSets
 {
 main
 {
-java { srcDirs = ["$projectDir/java"] }
-resources { srcDirs = ["$projectDir/resources"] }
+java { srcDirs = ["$projectDir/src/java"] }
+resources { srcDirs = ["$projectDir/src/resources"] }
 }
 }
 
-archivesBaseName = "CartographerBlockMod"
+archivesBaseName = "lim_carto_block"
 version = "1.0"
-minecraft.version = "1.6.4-9.11.1.965"
+minecraft.version = "1.6.4-9.11.1.964"
+
+dependencies {
+  compile files("OPENBLOCKS-1.2.9.jar", "OPENMODSLIB-0.5.1.jar")
+}

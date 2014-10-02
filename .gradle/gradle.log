@@ -5,21 +5,31 @@
  R4wk, ZeuX, IngisKahn      
  MCP Data version : unknown
 ****************************
+:downloadClient SKIPPED
+:downloadServer SKIPPED
+:extractUserDev
+:mergeJars SKIPPED
+:applyBinPatches SKIPPED
+:downloadMcpTools UP-TO-DATE
+:genSrgs UP-TO-DATE
+:deobfBinJar UP-TO-DATE
+:compileApiJava UP-TO-DATE
+:processApiResources UP-TO-DATE
+:apiClasses UP-TO-DATE
+:sourceMainJava UP-TO-DATE
+:compileJava UP-TO-DATE
+:processResources UP-TO-DATE
+:classes UP-TO-DATE
+:jar
+:reobf
+:assemble
+:compileTestJava UP-TO-DATE
+:processTestResources UP-TO-DATE
+:testClasses UP-TO-DATE
+:test UP-TO-DATE
+:check UP-TO-DATE
+:build
 
-FAILURE: Build failed with an exception.
+BUILD SUCCESSFUL
 
-* What went wrong:
-A problem occurred configuring root project 'CartographerBlockMod'.
-> Failed to notify project evaluation listener.
-   > Could not resolve all dependencies for configuration ':userDevPackageDepConfig'.
-      > Could not resolve net.minecraftforge:forge:1.6.4-9.11.1.965-universal.
-        Required by:
-            :CartographerBlockMod:1.0
-         > Could not GET 'https://libraries.minecraft.net/net/minecraftforge/forge/1.6.4-9.11.1.965-universal/forge-1.6.4-9.11.1.965-universal.pom'. Received status code 403 from server: Forbidden
-
-* Try:
-Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output.
-
-BUILD FAILED
-
-Total time: 6.93 secs
+Total time: 5.253 secs

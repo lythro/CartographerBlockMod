@@ -50,7 +50,6 @@ public class CartographerPacketHandler implements IPacketHandler {
 				CartographerBlockTileEntity tet = (CartographerBlockTileEntity)te;
 				tet.setDimName( newName );
 				playerMP.worldObj.markBlockForUpdate(x, y, z);//this could also be the code to make a custom packet to send to all players
-				System.out.println( "MARK FOR UPDATE" );
 			}
 		}
 

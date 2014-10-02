@@ -24,8 +24,8 @@ public class CartographerBlock extends BlockContainer {
 		this.setCreativeTab(CreativeTabs.tabBlock);
 		this.setHardness(5.6f);
 		this.setResistance(56.34f);
-		this.setTextureName("cartoblock:CartographerBlockModelTexture");
-		
+		this.setTextureName("cartographerblockmod:CartographerBlockModelTexture");
+		this.setUnlocalizedName("cartographerblock.unloc.block.name");
 	}
 	
 	@Override
