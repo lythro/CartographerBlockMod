@@ -35,7 +35,6 @@ public class CartographerBlockGUI extends GuiContainer {
 		//the container is instantiated and passed to the superclass for handling
 		super(new CartographerBlockContainer(inventoryPlayer, tileEntity));
 		cartoBlock = tileEntity;
-		
 	}
 
 	@Override

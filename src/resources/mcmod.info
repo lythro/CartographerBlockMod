@@ -3,7 +3,7 @@
   "modid": "lim_carto_block",
   "name": "CartographerBlockMod",
   "description": "Packs the Functionality of multiple OpenBlocks Cartographers into one block",
-  "version": "1.0",
+  "version": "1.1",
   "mcversion": "1.6.4",
   "url": "",
   "updateUrl": "",
