@@ -26,7 +26,6 @@ public class MEMapInterfaceTileEntity extends TileEntity implements SimpleCompon
 
 	@Override
 	public String getComponentName() {
-		System.out.println("asked for name!");
 		return "me_map_interface";
 	}
 	
@@ -159,11 +158,5 @@ public class MEMapInterfaceTileEntity extends TileEntity implements SimpleCompon
 		
 		
 		return new Object[]{true};
-	}
-	
-	@Callback
-	@Optional.Method(modid = "OpenComputers")
-	public Object[] greet(Context context, Arguments args) {
-		return new Object[]{String.format("Hello, %s!", args.checkString(0))};
 	}
 }

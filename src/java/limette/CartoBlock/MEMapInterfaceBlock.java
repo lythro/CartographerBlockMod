@@ -17,19 +17,27 @@ import com.sun.org.apache.xml.internal.resolver.readers.XCatalogReader;
 
 import cpw.mods.fml.common.network.FMLNetworkHandler;
 import cpw.mods.fml.common.Optional;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Icon;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 
 @Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = "OpenComputers")
 public class MEMapInterfaceBlock extends Block implements ITileEntityProvider{
 
+	public static final ResourceLocation texture = new ResourceLocation("cartographerblockmod:meMapInterfaceBlock.png");
+	public static Icon blockIcon;
+	
 	public MEMapInterfaceBlock(int par1, Material par2Material) {
 		super(par1, par2Material);
 		
@@ -50,5 +58,18 @@ public class MEMapInterfaceBlock extends Block implements ITileEntityProvider{
 									{
 		return false;
 	}
+	
+	@SideOnly(Side.CLIENT)
+	@Override
+	public Icon getIcon(int par1, int par2) {
+		return blockIcon;
+	}
+	
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void registerIcons(IconRegister par1IconRegister) {
+		blockIcon = par1IconRegister.registerIcon("cartographerblockmod:meMapInterfaceBlock");
+	}
+	
 	
 }
