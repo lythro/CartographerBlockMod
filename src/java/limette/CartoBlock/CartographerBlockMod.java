@@ -40,9 +40,6 @@ public class CartographerBlockMod
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
-    	
-    	System.out.println("PATH: " +  CartographerBlockGUI.textureResourceLoc.getResourcePath());
-    	
     	cartoBlock = (new CartographerBlock( CARTOBLOCK_ID, Material.rock ));
     	
     	GameRegistry.registerBlock(cartoBlock, "cartoBlock");
