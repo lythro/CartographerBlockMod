@@ -1,5 +1,7 @@
 package limette.CartoBlock;
 
+import appeng.api.Blocks;
+import appeng.me.block.BlockInterface;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -8,6 +10,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import openblocks.OpenBlocks.Items;
+import openblocks.common.item.ItemCartographer;
+import openblocks.common.item.ItemEmptyMap;
 import openmods.config.RegisterBlock;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -19,7 +23,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-@Mod(modid = CartographerBlockMod.MODID, name=CartographerBlockMod.NAME, version = CartographerBlockMod.VERSION, dependencies = "required-after:OpenComputers")
+@Mod(modid = CartographerBlockMod.MODID, name=CartographerBlockMod.NAME, version = CartographerBlockMod.VERSION, dependencies = "required-after:AppliedEnergistics;required-after:OpenBlocks;required-after:OpenComputers")
 @NetworkMod(clientSideRequired = true, serverSideRequired = true, channels={"cartoBlockMod"},  packetHandler=CartographerPacketHandler.class)
 public class CartographerBlockMod
 {
@@ -69,6 +73,9 @@ public class CartographerBlockMod
     	
     	GameRegistry.addRecipe(new ItemStack(cartoBlock, 1), "CIC", "IMI", "CIC",
     			'I', Block.blockIron, 'C', Items.cartographer, 'M', Item.emptyMap);
+    	
+    	GameRegistry.addRecipe(new ItemStack(meMapInterfaceBlock, 1), "CMC", "MIM", "CMC",
+    			'C', Items.cartographer, 'M', Items.emptyMap, 'I', Blocks.blkInterface ); 
     	
     }
 
